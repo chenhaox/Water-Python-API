@@ -1,6 +1,7 @@
 # !/usr/bin/env python
 import json
 import socket
+import time
 # API
 # http://waterdocs.pages.yunjichina.com.cn/user_manual/exports/water_api.html
 def generate_request_data(uuid, command="", parameters={}):
@@ -34,9 +35,15 @@ class Water2Robot():
 
     def data_send_recv(self, data):
         self.__w2_socket.send(data.encode())
+        time.sleep(.5)
         recv_data_raw = self.__w2_socket.recv(9999)
-        recv_data = json.loads(recv_data_raw.decode())
-        return recv_data
+        print(recv_data_raw)
+        for data in recv_data_raw.decode().split("\n"):
+            t_recv_data = json.loads(data)
+            if t_recv_data["type"] == "response":
+                return t_recv_data
+        # recv_data = json.loads(recv_data_raw.decode())
+        # return recv_data
 
     def data_recv(self):
         recv_data_raw = self.__w2_socket.recv(9999)
