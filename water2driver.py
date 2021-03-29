@@ -321,7 +321,7 @@ class Water2Robot():
         :param uuid:
         :return:
         """
-        command = generate_request_data(uuid, "wifi/connect")
+        command = generate_request_data(uuid, "wifi/connect", {"SSID":SSID,"password":password})
         return self.data_send_recv(command)
 
     def wifi_get_active_connection(self, uuid=1):
@@ -398,7 +398,7 @@ class Water2Robot():
         })
         return self.data_send_recv(command)
 
-    def set_luminance(self, r , g,  b, uuid=1):
+    def set_color(self, r , g,  b, uuid=1):
         # r g b [0-100]
         command = generate_request_data(uuid, "LED/set_color", {
             "r":r, "g":g, "b":b,
